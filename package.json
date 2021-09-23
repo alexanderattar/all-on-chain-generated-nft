@@ -18,6 +18,8 @@
     "ethers": "^5.0.24",
     "hardhat": "^2.6.1",
     "hardhat-deploy": "^0.7.0-beta.39",
+    "prettier": "^2.4.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.18",
     "web3": "^1.2.9"
   },
   "dependencies": {
