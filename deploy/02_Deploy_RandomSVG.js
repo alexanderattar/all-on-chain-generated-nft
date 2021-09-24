@@ -2,7 +2,6 @@ let {
   networkConfig,
   getNetworkIdFromName,
 } = require('../helper-hardhat-config');
-const fs = require('fs');
 
 module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deploy, get, log } = deployments;
@@ -11,6 +10,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   let linkTokenAddress;
   let vrfCoordinatorAddress;
 
+  // If on local chain use mock addresses
   if (chainId == 31337) {
     let linkToken = await get('LinkToken');
     let VRFCoordinatorMock = await get('VRFCoordinatorMock');
@@ -18,6 +18,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     vrfCoordinatorAddress = VRFCoordinatorMock.address;
     additionalMessage = ' --linkaddress ' + linkTokenAddress;
   } else {
+    // Use real contract addresses
     linkTokenAddress = networkConfig[chainId]['linkToken'];
     vrfCoordinatorAddress = networkConfig[chainId]['vrfCoordinator'];
   }

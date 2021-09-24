@@ -50,7 +50,7 @@ contract SVGNFT is ERC721URIStorage, Ownable {
               abi.encodePacked(
                 '{"name":"',
                 'SVG NFT', // The contract name
-                '", "description":"An NFT based on SVG!", "attributes":"", "image":"',
+                '", "description":"An NFT generated with SVG", "attributes": "", "image":"',
                 imageURI,
                 '"}'
               )

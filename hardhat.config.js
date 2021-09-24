@@ -21,8 +21,11 @@ const KOVAN_RPC_URL =
   process.env.KOVAN_RPC_URL ||
   'https://eth-kovan.alchemyapi.io/v2/your-api-key';
 
+const GOERLI_RPC_URL =
+  process.env.GOERLI_RPC_URL ||
+  'https://eth-goerli.alchemyapi.io/v2/your-api-key';
+
 const MNEMONIC = process.env.MNEMONIC || 'your mnemonic';
-// optional
 const PRIVATE_KEY = process.env.PRIVATE_KEY || 'your private key';
 const ETHERSCAN_API_KEY =
   process.env.ETHERSCAN_API_KEY || 'Your etherscan API key';
@@ -39,19 +42,26 @@ module.exports = {
     localhost: {},
     kovan: {
       url: KOVAN_RPC_URL,
-      // accounts: [PRIVATE_KEY],
-      accounts: {
-        mnemonic: MNEMONIC,
-      },
+      accounts: [`0x${PRIVATE_KEY}`],
+      // accounts: {
+      //   mnemonic: MNEMONIC,
+      // },
       saveDeployments: true,
     },
     rinkeby: {
       url: RINKEBY_RPC_URL,
-      // accounts: [PRIVATE_KEY],
-      accounts: {
-        mnemonic: MNEMONIC,
-      },
+      accounts: [`0x${PRIVATE_KEY}`],
+      // accounts: {
+      //   mnemonic: MNEMONIC,
+      // },
       saveDeployments: true,
+    },
+    goerli: {
+      url: GOERLI_RPC_URL,
+      accounts: [`0x${PRIVATE_KEY}`],
+      // accounts: {
+      //   mnemonic: MNEMONIC,
+      // },
     },
     ganache: {
       url: 'http://localhost:8545',
