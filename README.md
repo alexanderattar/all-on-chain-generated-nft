@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
 <a href="https://chain.link" target="_blank">
-<img src="./img/randomsvg.svg" width="225" alt="Random NFT logo">
+<img src="./img/rng.svg" width="225" alt="Random NFT logo">
 </a>
 </p>
 <br/>
