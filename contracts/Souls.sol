@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.4;
 
-import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
-import 'base64-sol/base64.sol';
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "base64-sol/base64.sol";
 
-import './SoulsDescriptor.sol';
+import "./SoulsDescriptor.sol";
 
 /**
  * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including
@@ -83,24 +83,24 @@ contract Souls is ERC721 {
     {
         require(
             _exists(tokenId),
-            'ERC721Metadata: URI query for nonexistent token'
+            "ERC721Metadata: URI query for nonexistent token"
         );
 
-        string memory soulType = 'Sketched';
+        string memory soulType = "Sketched";
         if (soulsType[tokenId] == true) {
-            soulType = 'Fully Painted';
+            soulType = "Fully Painted";
         }
 
         string memory name = descriptor.generateName(soulType, tokenId);
         string
-            memory description = 'Paintings of forgotten souls by various simulated minds that try to remember those who they once knew in the default world.';
+            memory description = "Paintings of forgotten souls by various simulated minds that try to remember those who they once knew in the default world.";
 
         string memory image = generateBase64Image(tokenId);
         string memory attributes = generateTraits(tokenId);
         return
             string(
                 abi.encodePacked(
-                    'data:application/json;base64,',
+                    "data:application/json;base64,",
                     Base64.encode(
                         bytes(
                             abi.encodePacked(
@@ -109,11 +109,11 @@ contract Souls is ERC721 {
                                 '", "description":"',
                                 description,
                                 '", "image": "',
-                                'data:image/svg+xml;base64,',
+                                "data:image/svg+xml;base64,",
                                 image,
                                 '",',
                                 attributes,
-                                '}'
+                                "}"
                             )
                         )
                     )
@@ -151,12 +151,12 @@ contract Souls is ERC721 {
     Max 160.
     */
     function claimSoul(uint256 ACID) public {
-        require(block.timestamp > startDate, 'NOT_STARTED'); // ~ 2000 gas
-        require(block.timestamp < endDate, 'ENDED');
-        require(claimedACIDs[ACID] == false, 'AC_ID ALREADY CLAIMED');
+        require(block.timestamp > startDate, "NOT_STARTED"); // ~ 2000 gas
+        require(block.timestamp < endDate, "ENDED");
+        require(claimedACIDs[ACID] == false, "AC_ID ALREADY CLAIMED");
         require(
             anchorCertificates.ownerOf(ACID) == msg.sender,
-            'AC_ID NOT OWNED BY SENDER'
+            "AC_ID NOT OWNED BY SENDER"
         );
 
         claimedACIDs[ACID] = true;
@@ -165,14 +165,14 @@ contract Souls is ERC721 {
     }
 
     function mintSoul() public payable {
-        require(block.timestamp > startDate, 'NOT_STARTED'); // ~ 2000 gas
-        require(block.timestamp < endDate, 'ENDED');
-        require(msg.value >= 0.010 ether, 'MORE ETH NEEDED'); //~$30
+        require(block.timestamp > startDate, "NOT_STARTED"); // ~ 2000 gas
+        require(block.timestamp < endDate, "ENDED");
+        require(msg.value >= 0.010 ether, "MORE ETH NEEDED"); //~$30
 
         if (msg.value >= 0.068 ether) {
             //~$200
             buyableSoulSupply += 1;
-            require(buyableSoulSupply <= 96, 'MAX_SOLD_96');
+            require(buyableSoulSupply <= 96, "MAX_SOLD_96");
             _createSoul(true, msg.sender);
         } else {
             // don't need to check ETH amount here since it is checked in the require above
@@ -190,7 +190,7 @@ contract Souls is ERC721 {
     }
 
     function withdrawETH() public {
-        require(msg.sender == collector, 'NOT_COLLECTOR');
+        require(msg.sender == collector, "NOT_COLLECTOR");
         recipient.transfer(address(this).balance);
     }
 }

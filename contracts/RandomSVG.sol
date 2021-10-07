@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
 
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
-import 'base64-sol/base64.sol';
-import '@chainlink/contracts/src/v0.8/VRFConsumerBase.sol';
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "base64-sol/base64.sol";
+import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
 contract RandomSVG is ERC721URIStorage, VRFConsumerBase, Ownable {
     uint256 public tokenCounter;
@@ -36,7 +36,7 @@ contract RandomSVG is ERC721URIStorage, VRFConsumerBase, Ownable {
         uint256 _fee
     )
         VRFConsumerBase(_VRFCoordinator, _LinkToken)
-        ERC721('RandomSVG', 'RSNFT')
+        ERC721("RandomSVG", "RSNFT")
     {
         tokenCounter = 0;
         keyHash = _keyhash;
@@ -44,8 +44,8 @@ contract RandomSVG is ERC721URIStorage, VRFConsumerBase, Ownable {
         maxNumberOfPaths = 10;
         maxNumberOfPathCommands = 5;
         size = 500;
-        pathCommands = ['M', 'L'];
-        colors = ['red', 'blue', 'green', 'yellow', 'black', 'white'];
+        pathCommands = ["M", "L"];
+        colors = ["red", "blue", "green", "yellow", "black", "white"];
     }
 
     function withdraw() public payable onlyOwner {
@@ -64,12 +64,12 @@ contract RandomSVG is ERC721URIStorage, VRFConsumerBase, Ownable {
     function finishMint(uint256 tokenId) public {
         require(
             bytes(tokenURI(tokenId)).length <= 0,
-            'tokenURI is already set!'
+            "tokenURI is already set!"
         );
-        require(tokenCounter > tokenId, 'TokenId has not been minted yet!');
+        require(tokenCounter > tokenId, "TokenId has not been minted yet!");
         require(
             tokenIdToRandomNumber[tokenId] > 0,
-            'Need to wait for the Chainlink node to respond!'
+            "Need to wait for the Chainlink node to respond!"
         );
         uint256 randomNumber = tokenIdToRandomNumber[tokenId];
         string memory svg = generateSVG(randomNumber);
@@ -112,7 +112,7 @@ contract RandomSVG is ERC721URIStorage, VRFConsumerBase, Ownable {
             );
             finalSvg = string(abi.encodePacked(finalSvg, pathSvg));
         }
-        finalSvg = string(abi.encodePacked(finalSvg, '</svg>'));
+        finalSvg = string(abi.encodePacked(finalSvg, "</svg>"));
     }
 
     function generatePath(uint256 _randomness)
@@ -155,9 +155,9 @@ contract RandomSVG is ERC721URIStorage, VRFConsumerBase, Ownable {
         pathCommand = string(
             abi.encodePacked(
                 pathCommand,
-                ' ',
+                " ",
                 uint2str(parameterOne),
-                ' ',
+                " ",
                 uint2str(parameterTwo)
             )
         );
@@ -170,7 +170,7 @@ contract RandomSVG is ERC721URIStorage, VRFConsumerBase, Ownable {
         returns (string memory _uintAsString)
     {
         if (_i == 0) {
-            return '0';
+            return "0";
         }
         uint256 j = _i;
         uint256 len;
@@ -198,7 +198,7 @@ contract RandomSVG is ERC721URIStorage, VRFConsumerBase, Ownable {
         // example:
         // <svg width='500' height='500' viewBox='0 0 285 350' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill='black' d='M150,0,L75,200,L225,200,Z'></path></svg>
         // data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNTAwJyBoZWlnaHQ9JzUwMCcgdmlld0JveD0nMCAwIDI4NSAzNTAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbD0nYmxhY2snIGQ9J00xNTAsMCxMNzUsMjAwLEwyMjUsMjAwLFonPjwvcGF0aD48L3N2Zz4=
-        string memory baseURL = 'data:image/svg+xml;base64,';
+        string memory baseURL = "data:image/svg+xml;base64,";
         string memory svgBase64Encoded = Base64.encode(
             bytes(string(abi.encodePacked(svg)))
         );
@@ -213,12 +213,12 @@ contract RandomSVG is ERC721URIStorage, VRFConsumerBase, Ownable {
         return
             string(
                 abi.encodePacked(
-                    'data:application/json;base64,',
+                    "data:application/json;base64,",
                     Base64.encode(
                         bytes(
                             abi.encodePacked(
                                 '{"name":"',
-                                'SVG NFT', // The contract name
+                                "SVG NFT", // The contract name
                                 '", "description":"An NFT based on SVG!", "attributes":"", "image":"',
                                 imageURI,
                                 '"}'

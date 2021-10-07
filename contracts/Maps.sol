@@ -1,12 +1,12 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
-import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-import 'base64-sol/base64.sol';
-import '@openzeppelin/contracts/utils/Strings.sol';
+import "base64-sol/base64.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 //////////////////////////////////////////////
 
@@ -37,7 +37,7 @@ interface MapInterface {
 contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
     MapInterface immutable mapV1;
 
-    constructor(MapInterface v1Address) ERC721('Maps Restored', 'MAP') {
+    constructor(MapInterface v1Address) ERC721("Maps Restored", "MAP") {
         mapV1 = v1Address;
     }
 
@@ -46,58 +46,58 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
 
     /// @notice All the various prefixes for the waypoint name
     string[] private prefixes = [
-        'Dripping',
-        'Holy',
-        'Teller',
-        'Atlas',
-        'Fenners',
-        'Bridger',
-        'Oake',
-        'Damned',
-        'Acreage',
-        'Fate',
-        'Trinity',
-        'Diamond',
-        'Halo',
-        'Lake',
-        'Crater',
-        'Grail',
-        'Basin',
-        'Hill',
-        'Dry',
-        'Dragon',
-        'Cloud'
+        "Dripping",
+        "Holy",
+        "Teller",
+        "Atlas",
+        "Fenners",
+        "Bridger",
+        "Oake",
+        "Damned",
+        "Acreage",
+        "Fate",
+        "Trinity",
+        "Diamond",
+        "Halo",
+        "Lake",
+        "Crater",
+        "Grail",
+        "Basin",
+        "Hill",
+        "Dry",
+        "Dragon",
+        "Cloud"
     ];
 
     /// @notice All the various locations for the waypoint name
     string[] private locations = [
-        'Town',
-        'Village',
-        'Forest',
-        'Woods',
-        'Mountains',
-        'City',
-        'Farm',
-        'Providence',
-        'Castle',
-        'Manor',
-        'House',
-        'Cave',
-        'Island',
-        'Hamlet',
-        'Springs',
-        'Fort',
-        'Loch',
-        'Bunker',
-        'Hovel',
-        'Hall',
-        'Reservoir'
-        'Stones',
-        'Peaks',
-        'Borough',
-        'Lake',
-        'Land',
-        'Hill'
+        "Town",
+        "Village",
+        "Forest",
+        "Woods",
+        "Mountains",
+        "City",
+        "Farm",
+        "Providence",
+        "Castle",
+        "Manor",
+        "House",
+        "Cave",
+        "Island",
+        "Hamlet",
+        "Springs",
+        "Fort",
+        "Loch",
+        "Bunker",
+        "Hovel",
+        "Hall",
+        "Reservoir"
+        "Stones",
+        "Peaks",
+        "Borough",
+        "Lake",
+        "Land",
+        "Hill"
     ];
 
     /// @notice Pseudo random number generator based on input
@@ -157,7 +157,7 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
         uint256 waypointCount = getWaypointCount(tokenId);
 
         string memory mapName = string(
-            abi.encodePacked('Map #', Strings.toString(tokenId))
+            abi.encodePacked("Map #", Strings.toString(tokenId))
         );
 
         string memory waypointNameSVGs;
@@ -170,7 +170,7 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
                     Strings.toString(ySpace),
                     'px">',
                     name,
-                    '</text>',
+                    "</text>",
                     waypointNameSVGs
                 )
             );
@@ -182,9 +182,9 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
             waypointPointsSVGs = string(
                 abi.encodePacked(
                     Strings.toString(coord[0]),
-                    ',',
+                    ",",
                     Strings.toString(coord[1]),
-                    ' ',
+                    " ",
                     waypointPointsSVGs
                 )
             );
@@ -225,19 +225,19 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
             '"/>',
             startJourneySVGMarker,
             endJourneySVGMarker,
-            '</g>',
-            '</svg>'
+            "</g>",
+            "</svg>"
         );
 
         bytes memory image = abi.encodePacked(
-            'data:image/svg+xml;base64,',
+            "data:image/svg+xml;base64,",
             Base64.encode(bytes(svg))
         );
 
         return
             string(
                 abi.encodePacked(
-                    'data:application/json;base64,',
+                    "data:application/json;base64,",
                     Base64.encode(
                         bytes(
                             abi.encodePacked(
@@ -263,15 +263,15 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (uint256[2] memory)
     {
-        require(_exists(tokenId), 'Token ID is invalid');
+        require(_exists(tokenId), "Token ID is invalid");
         uint256 waypointCount = getWaypointCount(tokenId);
         require(
             waypointIndex >= 0 && waypointIndex < waypointCount,
-            'Waypoint Index is invalid'
+            "Waypoint Index is invalid"
         );
 
-        uint256 x = _getWaypointPoint(tokenId, 'X', waypointIndex);
-        uint256 y = _getWaypointPoint(tokenId, 'Y', waypointIndex);
+        uint256 x = _getWaypointPoint(tokenId, "X", waypointIndex);
+        uint256 y = _getWaypointPoint(tokenId, "Y", waypointIndex);
 
         return [x, y];
     }
@@ -280,7 +280,7 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
     /// @param tokenId the token ID
     /// @return The number of waypoints
     function getWaypointCount(uint256 tokenId) public view returns (uint256) {
-        require(_exists(tokenId), 'Token ID is invalid');
+        require(_exists(tokenId), "Token ID is invalid");
         return randomFromRange(tokenId, waypointRange);
     }
 
@@ -292,7 +292,7 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (uint256[2][] memory)
     {
-        require(_exists(tokenId), 'Token ID is invalid');
+        require(_exists(tokenId), "Token ID is invalid");
         uint256 waypointCount = getWaypointCount(tokenId);
         uint256[2][] memory arr = new uint256[2][](waypointCount);
 
@@ -312,11 +312,11 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (string memory)
     {
-        require(_exists(tokenId), 'Token ID is invalid');
+        require(_exists(tokenId), "Token ID is invalid");
         uint256 waypointCount = getWaypointCount(tokenId);
         require(
             waypointIndex >= 0 && waypointIndex < waypointCount,
-            'Waypoint Index is invalid'
+            "Waypoint Index is invalid"
         );
 
         uint256 rand = _random(
@@ -334,19 +334,19 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
         waypointName[0] = prefixes[rand % prefixes.length];
         waypointName[1] = locations[rand % locations.length];
         output = string(
-            abi.encodePacked(waypointName[0], ' ', waypointName[1], output)
+            abi.encodePacked(waypointName[0], " ", waypointName[1], output)
         );
 
         if (age == 13) {
-            output = string(abi.encodePacked('Mystic ', output));
+            output = string(abi.encodePacked("Mystic ", output));
         }
 
         if (age > 1 && age <= 4) {
-            output = string(abi.encodePacked('Old ', output));
+            output = string(abi.encodePacked("Old ", output));
         }
 
         if (age >= 27) {
-            output = string(abi.encodePacked('New ', output));
+            output = string(abi.encodePacked("New ", output));
         }
 
         return output;
@@ -360,7 +360,7 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (string[] memory)
     {
-        require(_exists(tokenId), 'Token ID is invalid');
+        require(_exists(tokenId), "Token ID is invalid");
 
         uint256 waypointCount = getWaypointCount(tokenId);
         string[] memory arr = new string[](waypointCount);
@@ -380,7 +380,7 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
             uint256 tokenIdForTransfer = tokenIds[index];
             require(
                 mapV1.ownerOf(tokenIdForTransfer) == _msgSender(),
-                'Sender does not own 1 or more Token Ids provided'
+                "Sender does not own 1 or more Token Ids provided"
             );
             mapV1.transferFrom(_msgSender(), address(this), tokenIdForTransfer);
             _safeMint(_msgSender(), tokenIdForTransfer);
@@ -390,7 +390,7 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
     /// @notice Allows the owner to find a map (mints a token)
     /// @param tokenId the token ID
     function ownerDiscoverMap(uint256 tokenId) public nonReentrant onlyOwner {
-        require(tokenId >= 9751 && tokenId < 10001, 'Token ID invalid');
+        require(tokenId >= 9751 && tokenId < 10001, "Token ID invalid");
         _safeMint(owner(), tokenId);
     }
 
@@ -405,7 +405,7 @@ contract MapRestored is ERC721Enumerable, ReentrancyGuard, Ownable {
     {
         require(
             _exists(tokenId),
-            'ERC721Metadata: URI query for nonexistent token'
+            "ERC721Metadata: URI query for nonexistent token"
         );
         return string(_constructTokenURI(tokenId));
     }
